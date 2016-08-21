@@ -25,7 +25,6 @@
 /* Begin PBXFileReference section */
 		7D168D2A1D5BB61400EBE636 /* FacebookBasketBaller */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FacebookBasketBaller; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D168D2D1D5BB61400EBE636 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		7D168D341D5BB9B000EBE636 /* screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screen.png; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +58,6 @@
 			isa = PBXGroup;
 			children = (
 				7D168D2D1D5BB61400EBE636 /* main.cpp */,
-				7D168D341D5BB9B000EBE636 /* screen.png */,
 			);
 			path = FacebookBasketBaller;
 			sourceTree = "<group>";
@@ -283,6 +281,7 @@
 				7D168D331D5BB61400EBE636 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
