@@ -7,12 +7,13 @@
 //
 
 #include <iostream>
-#include <opencv2/opencv.hpp>f
+#include <opencv2/opencv.hpp>
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include <chrono>
 #include <thread>
+#include <string>
 
 using namespace cv;
 using namespace std;
@@ -69,7 +70,7 @@ int getProjectileLocation(Mat redImage){
 void setupThresholdGUI(){
     lowR=100;
     highR=255;
-    
+
     createTrackbar("lowR", nullptr , &lowR, 255,getFeatures);
     createTrackbar("highR", nullptr , &highR, 255,getFeatures);
     createTrackbar("Counter", nullptr , &counter, 55,getFeatures);
@@ -83,7 +84,7 @@ void setupThresholdGUI(){
 }
 
 void fire(int startLocation,int endLocation){
-    string command = "/usr/local/adb shell input swipe "+ to_string(startLocation) + " 1557 "+ to_string(endLocation) +" 600 ";
+    string command = "/usr/local/adb shell input swipe "+ std::to_string(startLocation) + " 1557 "+ to_string(endLocation) +" 600 ";
     system(command.data());
 }
 
@@ -91,20 +92,20 @@ int main(int argc, const char * argv[]) {
 //    system("/usr/local/adb shell screencap -p | perl -pe 's/\\x0D\\x0A/\\x0A/g' > /Users/stbogdan/dev/FacebookBasketBaller/screen.png ");
 //    waitKey();
     fire(0,0);
-    
-    
+
+
     namedWindow("R-red",CV_GUI_EXPANDED);
     auto start = chrono::steady_clock::now();
-    
+
     image = imread("/Users/stbogdan/dev/FacebookBasketBaller/screen.png", CV_LOAD_IMAGE_COLOR);
-    
+
     auto end = chrono::steady_clock::now();
     auto diff = end - start;
     cout<< chrono::duration <double, milli> (diff).count()<<"\tto get screenshot" <<endl;
 
 
     setupThresholdGUI();
-    
+
     counter =0;
     waitKey();
     string displayString = "";
@@ -115,7 +116,7 @@ int main(int argc, const char * argv[]) {
         system("/usr/local/adb shell screencap -p /sdcard/screen.png");
         system("/usr/local/adb pull /sdcard/screen.png /Users/stbogdan/dev/FacebookBasketBaller/screen.png");
         image = imread("/Users/stbogdan/dev/FacebookBasketBaller/screen.png", CV_LOAD_IMAGE_COLOR);
-        
+
         end = chrono::steady_clock::now();
         double diff =chrono::duration <double, milli> (end - start).count();
         cout<< (int) diff <<"\tto get frame" <<endl;
@@ -126,11 +127,11 @@ int main(int argc, const char * argv[]) {
         //Determine ball and target
         int basket      =getTargetLocation(redImage);
         int ball        =getProjectileLocation(redImage);
-        
+
         end = chrono::steady_clock::now();
         diff =chrono::duration <double, milli> (end - start).count();
         cout<< (int) diff <<"\tto get screenshow, features and points" <<endl;
-        
+
         //Handle time variation by waiting a bit
         waitKey(1200-(int) diff);
 
@@ -183,20 +184,20 @@ int main(int argc, const char * argv[]) {
             fire(ball,basket);
             counter++;
             cout<<"Fired "<<counter<<endl;
-            
+
         }
         else{
             cout<<endl<<"FIRE ABORDED TARGET NOT FOUND "<<counter<<endl<<endl;
             continue;
         }
-       
+
         end = chrono::steady_clock::now();
         diff =chrono::duration <double, milli> (end - start).count();
         cout<< (int) diff <<"\tto fire" <<endl<<endl;
-        
+
         //Wait for ball to respawn
          waitKey(delayFrame);
     }
-    
+
     return 0;
 }
